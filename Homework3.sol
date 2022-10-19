@@ -20,9 +20,9 @@ contract BootcampContract {
 
     function checkOwner() external view returns (address) {
         if (msg.sender == owner) {
-            return owner;
-        } else {
             return 0x000000000000000000000000000000000000dEaD;
+        } else {
+            return owner;
         }
     }
 }
