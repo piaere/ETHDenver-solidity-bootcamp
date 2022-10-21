@@ -26,6 +26,8 @@ contract volcanoCoin {
         uint amount;
     }
 
+    mapping(address => Payment[]) public payments;
+
     event newTotalSupply(uint256);
     event transferEvent(address, uint256);
 
@@ -46,6 +48,7 @@ contract volcanoCoin {
         require(balances[msg.sender] >= _amount, "Insufficient balance");
         balances[msg.sender] -= _amount;
         balances[_recipient] += _amount;
+        payments[msg.sender].push(Payment(_recipient, _amount));
         emit transferEvent(_recipient, balances[_recipient]);
     }
 }
