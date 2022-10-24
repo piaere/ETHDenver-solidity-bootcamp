@@ -10,7 +10,6 @@ contract volcanoCoin {
         Owner = msg.sender;
 
         balances[Owner] = totalSupply;
-        totalSupply = 0;
     }
 
     modifier onlyOwner() {
