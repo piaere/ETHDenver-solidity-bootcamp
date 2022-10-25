@@ -2,32 +2,28 @@
 
 pragma solidity ^0.8;
 
-contract volcanoCoin {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract volcanoCoin is Ownable {
     uint256 public totalSupply = 10000;
     address Owner;
 
-    constructor() {
+    constructor() { 
         Owner = msg.sender;
-
+    
         balances[Owner] = totalSupply;
-    }
-
-    modifier onlyOwner() {
-        if (msg.sender == Owner) {
-            _;
-        }
     }
 
     mapping(address => uint256) public balances;
 
     struct Payment {
-        address recipient;
-        uint amount;
+         address recipient;
+         uint amount;
     }
 
     mapping(address => Payment[]) public payments;
 
-    event newTotalSupply(uint256);
+    event newTotalSupply(uint256); 
     event transferEvent(address, uint256);
 
     function getTotalSupply() public view returns (uint256) {
@@ -39,7 +35,7 @@ contract volcanoCoin {
         emit newTotalSupply(totalSupply);
     }
 
-    function getUserBalance() public view returns (uint256) {
+    function getUserBalance() public view returns(uint256){
         return balances[msg.sender];
     }
 
