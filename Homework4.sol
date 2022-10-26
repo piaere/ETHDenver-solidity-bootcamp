@@ -9,7 +9,7 @@ contract volcanoCoin is Ownable {
     address Owner;
 
     constructor() {
-        Owner = msg.sender;
+        Owner = owner();
 
         balances[Owner] = totalSupply;
     }
@@ -21,7 +21,7 @@ contract volcanoCoin is Ownable {
         uint amount;
     }
 
-    mapping(address => Payment[]) public payments;
+    mapping(address => Payment[]) internal payments;
 
     event newTotalSupply(uint256);
     event transferEvent(address, uint256);
@@ -43,7 +43,23 @@ contract volcanoCoin is Ownable {
         require(balances[msg.sender] >= _amount, "Insufficient balance");
         balances[msg.sender] -= _amount;
         balances[_recipient] += _amount;
-        payments[msg.sender].push(Payment(_recipient, _amount));
+        recordPayment(msg.sender, _recipient, _amount);
         emit transferEvent(_recipient, balances[_recipient]);
+    }
+
+    function viewPaymentsRecord(address _addy)
+        public
+        view
+        returns (Payment[] memory)
+    {
+        return payments[_addy];
+    }
+
+    function recordPayment(
+        address _from,
+        address _to,
+        uint _amount
+    ) internal {
+        payments[_from].push(Payment(_to, _amount));
     }
 }
